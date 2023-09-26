@@ -49,7 +49,7 @@ st.header('Model Prediction house price value in California')
 
 longitude = st.number_input("Longitude", max_value=0.0)
 latitude = st.number_input("Latitude", min_value=1.0)
-age = st.number_input("Housing Median Age", min_value=1.0)
+housing_median_age = st.number_input("Housing Median Age", min_value=1.0)
 total_rooms = st.number_input("Total rooms", min_value=1.0)
 total_bedrooms = st.number_input("Total bedrooms", min_value=1.0)
 population = st.number_input("Population", min_value=1.0)
