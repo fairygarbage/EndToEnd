@@ -1,21 +1,14 @@
-import os
-import tarfile
-import urllib
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import StratifiedShuffleSplit
-import matplotlib.pyplot as plt
-from pandas.plotting import scatter_matrix
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OrdinalEncoder
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.model_selection import cross_val_score
+# Importa las bibliotecas necesarias
+import streamlit as st  
+import pandas as pd    
+import numpy as np     
+import joblib  
+from sklearn.compose import ColumnTransformer  
+from sklearn.pipeline import Pipeline          
+from sklearn.impute import SimpleImputer        
+from sklearn.preprocessing import FunctionTransformer, StandardScaler, OneHotEncoder  
+from sklearn.base import BaseEstimator, TransformerMixin  
 
-
-DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml2/master/"
-HOUSING_PATH = os.path.join("datasets", "housing")
-HOUSING_URL = DOWNLOAD_ROOT + "datasets/housing/housing.tgz"
 
 def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
     os.makedirs(housing_path, exist_ok=True)
