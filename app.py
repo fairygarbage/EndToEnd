@@ -57,7 +57,7 @@ households = st.number_input("Households", min_value=1.0)
 income = st.number_input("Median income", min_value=1.0)
 ocean_proximity = st.selectbox("Ocean Proximity: ",['<1H OCEAN', 'NEAR BAY', 'NEAR OCEAN', 'INLAND', 'ISLAND'])
 
- if st.button('Search prediction'):
+if st.button('Search prediction'):
         data = pd.DataFrame({
             'longitude': [longitude],
             'latitude': [latitude],
