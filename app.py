@@ -7,68 +7,40 @@ from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer        
 from sklearn.preprocessing import FunctionTransformer, StandardScaler, OneHotEncoder  
 from sklearn.base import BaseEstimator, TransformerMixin 
+st.header('House prediction base in Californa Prices Values DataSet')
+st.write('Data Science Project')
 
-rooms_ix, bedrooms_ix, population_ix, household_ix = 3, 4, 5, 6
+col1, col2, col3 = st.columns(3)
 
-
-class CombinedAttributesAdder(BaseEstimator,TransformerMixin):
-    def __init__(self,add_bedrooms_per_room = True):
-        self.add_bedrooms_per_room = add_bedrooms_per_room
-    
-    def fit(self,X, y = None):
-        return self
-
-    def transform(self, X, y=None):
-            rooms_per_household = X[:, rooms_ix] / X[:, household_ix]
-            population_per_household = X[:, population_ix] / X[:, household_ix]
-            if self.add_bedrooms_per_room:
-                    bedrooms_per_room = X[:, bedrooms_ix] / X[:, rooms_ix]
-                    return np.c_[X, rooms_per_household, population_per_household, bedrooms_per_room]
-            else:
-                return np.c_[X, rooms_per_household, population_per_household]
+with st.container():
+    st.write("Indique la locación")
+    longitude = col1.number_input('Longitude', min_value = -124.0, format = "%.2f")
+    latitude = col1.number_input('Latitude', min_value = 30.0)
+    population = col1.number_input('Population', min_value = 1.0, max_value = 50000.0, format = "%.0f")
+    ocean_proximity = col1.selectbox('Proximity to ocean', ['<1H OCEAN', 'INLAND', 'NEAR OCEAN', 'NEAR BAY', 'ISLAND'])
 
 
-def transform(self, X, y=None):
-            rooms_per_household = X[:, rooms_ix] / X[:, household_ix]
-            population_per_household = X[:, population_ix] / X[:, household_ix]
-            if self.add_bedrooms_per_room:
-                    bedrooms_per_room = X[:, bedrooms_ix] / X[:, rooms_ix]
-                    return np.c_[X, rooms_per_household, population_per_household, bedrooms_per_room]
-            else:
-                return np.c_[X, rooms_per_household, population_per_household]
+with st.container():
+    total_rooms = col2.number_input('Total de habitaciones', min_value = 1.0, max_value = 50000.0, format = "%.0f")
+    total_bedrooms = col2.number_input('Total de dormitorios', min_value = 1.0, max_value = 7000.0, format = "%.0f")
 
-def predicts(data):
-    model = joblib.load("final_model.pkl")
-    pipeline = joblib.load("full_pipeline.pkl")
-    data = pipeline.transform(data)
-    
-    return model.predicts(data)
-    
+with st.container():
+    households = col3.number_input('Households', min_value = 1.0, max_value = 10000.0, format = "%.0f")
+    housing_median_age = col3.slider('Housing median age', step=1.0, min_value=1.0, max_value=100.0, value=0.0, format = "%.0f")
+    median_income = col3.number_input('Median income', min_value = 0.0, max_value = 17.0, format = "%.4f")
 
-st.header('Model Prediction house price value in California')
+    if st.button('Search prediction'):
+        data = pd.DataFrame({
+            'longitude': [longitude],
+            'latitude': [latitude],
+            'housing_median_age': [housing_median_age],
+            'total_rooms': [total_rooms],
+            'total_bedrooms': [total_bedrooms],
+            'population': [population],
+            'households': [households],
+            'median_income': [median_income],
+            'ocean_proximity': [ocean_proximity]}
+        )
 
-longitude = st.number_input("Longitude", max_value=0.0)
-latitude = st.number_input("Latitude", min_value=1.0)
-housing_median_age = st.number_input("Housing Median Age", min_value=1.0)
-total_rooms = st.number_input("Total rooms", min_value=1.0)
-total_bedrooms = st.number_input("Total bedrooms", min_value=1.0)
-population = st.number_input("Population", min_value=1.0)
-households = st.number_input("Households", min_value=1.0)
-median_income = st.number_input("Median income", min_value=1.0)
-ocean_proximity = st.selectbox("Ocean Proximity: ",['<1H OCEAN', 'NEAR BAY', 'NEAR OCEAN', 'INLAND', 'ISLAND'])
-
-if st.button('Search prediction'):
-    data = pd.DataFrame({
-        'longitude': [longitude],
-        'latitude': [latitude],
-        'housing_median_age': [housing_median_age],
-        'total_rooms': [total_rooms],
-        'total_bedrooms': [total_bedrooms],
-        'population': [population],
-        'households': [households],
-        'median_income': [median_income],
-        'ocean_proximity': [ocean_proximity]}
-    )
-
-result = predicts(data)
-st.write("The predicted value is {:.1f} USD".format(result[0]))
+        result = prediction.predict(data)
+        st.write("The predicted value is of {:.1f} usd".format(result[0]))
