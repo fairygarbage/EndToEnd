@@ -54,7 +54,7 @@ total_rooms = st.number_input("Total rooms", min_value=1.0)
 total_bedrooms = st.number_input("Total bedrooms", min_value=1.0)
 population = st.number_input("Population", min_value=1.0)
 households = st.number_input("Households", min_value=1.0)
-income = st.number_input("Median income", min_value=1.0)
+median_income = st.number_input("Median income", min_value=1.0)
 ocean_proximity = st.selectbox("Ocean Proximity: ",['<1H OCEAN', 'NEAR BAY', 'NEAR OCEAN', 'INLAND', 'ISLAND'])
 
 if st.button('Search prediction'):
