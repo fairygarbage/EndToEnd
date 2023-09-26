@@ -9,18 +9,11 @@ from sklearn.preprocessing import FunctionTransformer, StandardScaler, OneHotEnc
 from sklearn.base import BaseEstimator, TransformerMixin  
 import joblib      
 
-# Función para predecir el valor de una casa
 def predicts(data):
-    # Carga el modelo preentrenado desde el archivo "my_model.pkl"
-    model = joblib.load("my_model.pkl")
-    
-    # Obtiene la pipeline completa para preparar los datos
+    model = joblib.load("final_model.pkl")
     full_pipeline = fetch_pipeline()
-    
-    # Transforma los datos de entrada según la pipeline
     data_prepared = full_pipeline.transform(data)
     
-    # Realiza la predicción con el modelo
     return model.predict(data_prepared)
 
 # Función para obtener la pipeline de preparación de datos
