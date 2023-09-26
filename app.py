@@ -59,22 +59,21 @@ class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
             return np.c_[X, rooms_per_household, population_per_household]
 
 st.title("Prediction Model")
+with st.container():
+    longitude = st.number_input("Longitude", max_value=0.0)
+    latitude = st.number_input("Latitude", min_value=1.0)
+    population = st.number_input("Population", min_value=1.0)
 
-longitude = st.number_input("Longitude", max_value=0.0)
-latitude = st.number_input("Latitude", min_value=1.0)
-age = st.number_input("Housing Median Age", min_value=1.0)
-total_rooms = st.number_input("Total rooms", min_value=1.0)
-total_bedrooms = st.number_input("Total bedrooms", min_value=1.0)
-population = st.number_input("Population", min_value=1.0)
-households = st.number_input("Households", min_value=1.0)
-income = st.number_input("Median income", min_value=1.0)
+with st.container():
+    total_rooms = st.number_input("Total rooms", min_value=1.0)
+    total_bedrooms = st.number_input("Total bedrooms", min_value=1.0)
+    households = st.number_input("Households", min_value=1.0)
+    age = st.number_input("Housing Median Age", min_value=1.0)
+    income = st.number_input("Median income", min_value=1.0)
 
 ocean_proximity = st.selectbox("Ocean Proximity: ",['<1H OCEAN', 'INLAND', 'ISLAND', 'NEAR BAY', 'NEAR OCEAN'])
 
-if st.button("Predict house value"):
-    # Mapea la categoría de proximidad al océano a un valor numérico
-    ocean = 0 if ocean_proximity == '<1H OCEAN' else 1 if ocean_proximity == 'INLAND' else 2 if ocean_proximity == 'ISLAND' else 3 if ocean_proximity == 'NEAR BAY' else 4
-    
+if st.button("Predict house value"):    
     data = pd.DataFrame({
         'longitude': [longitude],
         'latitude': [latitude],
