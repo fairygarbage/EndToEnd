@@ -8,7 +8,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import FunctionTransformer, StandardScaler, OneHotEncoder  
 from sklearn.base import BaseEstimator, TransformerMixin 
 
-rooms_ix, bedrooms_ix, population_ix, households_ix = 3, 4, 5, 6
+rooms_ix, bedrooms_ix, population_ix, household_ix = 3, 4, 5, 6
 
 
 class CombinedAttributesAdder(BaseEstimator,TransformerMixin):
