@@ -42,7 +42,7 @@ def predicts(data):
     pipeline = joblib.load("full_pipeline.pkl")
     data = pipeline.transform(data)
     
-    return model.predict(data)
+    return model.predicts(data)
     
 
 st.header('Model Prediction house price value in California')
