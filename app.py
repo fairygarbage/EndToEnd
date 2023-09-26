@@ -1,4 +1,3 @@
-# Importa las bibliotecas necesarias
 import streamlit as st  
 import pandas as pd    
 import numpy as np     
@@ -16,43 +15,33 @@ def predicts(data):
     
     return model.predict(data_prepared)
 
-# Función para obtener la pipeline de preparación de datos
 def fetch_pipeline():
-    # Define una pipeline numérica para transformaciones en datos numéricos
     num_pipeline = Pipeline([
-        ('imputer', SimpleImputer(strategy="median")),  # Imputa valores faltantes con la mediana
-        ('attribs_adder', CombinedAttributesAdder()),   # Agrega atributos personalizados
-        ('std_scaler', StandardScaler())                # Estandariza los datos
+        ('imputer', SimpleImputer(strategy="median")),  
+        ('attribs_adder', CombinedAttributesAdder()),  
+        ('std_scaler', StandardScaler())                
     ])
 
-    # Lee el conjunto de datos de viviendas desde un archivo CSV
-    housing = pd.read_csv("datasets/housing/housing.csv")
+    housing = pd.read_csv("datasets housing/housing.csv")
     
-    # Elimina la columna "median_house_value" del conjunto de datos
     housing = housing.drop("median_house_value", axis=1)
     
-    # Divide el conjunto de datos en datos numéricos y categóricos
     housing_num = housing.drop("ocean_proximity", axis=1)
     
-    # Define las columnas numéricas y categóricas
     num_attribs = list(housing_num)
     cat_attribs = ["ocean_proximity"]
 
-    # Crea una ColumnTransformer para aplicar transformaciones a diferentes columnas
     full_pipeline = ColumnTransformer([
-        ("num", num_pipeline, num_attribs),    # Aplica la pipeline numérica a las columnas numéricas
-        ("cat", OneHotEncoder(), cat_attribs)  # Codifica las columnas categóricas
+        ("num", num_pipeline, num_attribs),   
+        ("cat", OneHotEncoder(), cat_attribs) 
     ])
     
-    # Ajusta la pipeline completa al conjunto de datos de viviendas
     full_pipeline.fit(housing)
 
     return full_pipeline
 
-# Índices de las columnas específicas en los datos
 rooms_ix, bedrooms_ix, population_ix, households_ix = 3, 4, 5, 6
 
-# Clase para agregar atributos personalizados
 class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
     def __init__(self, add_bedrooms_per_room=True):
         self.add_bedrooms_per_room = add_bedrooms_per_room
@@ -69,10 +58,8 @@ class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
         else:
             return np.c_[X, rooms_per_household, population_per_household]
 
-# Configura la interfaz de usuario de Streamlit
 st.title("Prediction Model")
 
-# Entrada de usuario para diferentes características de viviendas
 longitude = st.number_input("Longitude", max_value=0.0)
 latitude = st.number_input("Latitude", min_value=1.0)
 age = st.number_input("Housing Median Age", min_value=1.0)
@@ -82,15 +69,12 @@ population = st.number_input("Population", min_value=1.0)
 households = st.number_input("Households", min_value=1.0)
 income = st.number_input("Median income", min_value=1.0)
 
-# Selección de una categoría para la proximidad al océano
 ocean_proximity = st.selectbox("Ocean Proximity: ",['<1H OCEAN', 'INLAND', 'ISLAND', 'NEAR BAY', 'NEAR OCEAN'])
 
-# Botón para realizar la predicción del valor de la casa
 if st.button("Predict house value"):
     # Mapea la categoría de proximidad al océano a un valor numérico
     ocean = 0 if ocean_proximity == '<1H OCEAN' else 1 if ocean_proximity == 'INLAND' else 2 if ocean_proximity == 'ISLAND' else 3 if ocean_proximity == 'NEAR BAY' else 4
     
-    # Crea un DataFrame con los valores de entrada del usuario
     data = pd.DataFrame({
         'longitude': [longitude],
         'latitude': [latitude],
@@ -103,6 +87,5 @@ if st.button("Predict house value"):
         'ocean_proximity': [ocean_proximity]
     })
     
-    # Realiza la predicción y muestra el resultado en la interfaz
     result = predicts(data)
     st.text(result[0])
