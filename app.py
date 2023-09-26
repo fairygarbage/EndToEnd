@@ -53,5 +53,5 @@ with st.container():
             'ocean_proximity': [ocean_proximity]}
         )
 
-        result = prediction.predict(data)
+        result = predict(data)
         st.write("The predicted value is of {:.1f} usd".format(result[0]))
