@@ -58,17 +58,17 @@ income = st.number_input("Median income", min_value=1.0)
 ocean_proximity = st.selectbox("Ocean Proximity: ",['<1H OCEAN', 'NEAR BAY', 'NEAR OCEAN', 'INLAND', 'ISLAND'])
 
 if st.button('Search prediction'):
-        data = pd.DataFrame({
-            'longitude': [longitude],
-            'latitude': [latitude],
-            'housing_median_age': [housing_median_age],
-            'total_rooms': [total_rooms],
-            'total_bedrooms': [total_bedrooms],
-            'population': [population],
-            'households': [households],
-            'median_income': [median_income],
-            'ocean_proximity': [ocean_proximity]}
-        )
+    data = pd.DataFrame({
+        'longitude': [longitude],
+        'latitude': [latitude],
+        'housing_median_age': [housing_median_age],
+        'total_rooms': [total_rooms],
+        'total_bedrooms': [total_bedrooms],
+        'population': [population],
+        'households': [households],
+        'median_income': [median_income],
+        'ocean_proximity': [ocean_proximity]}
+    )
 
 result = predicts(data)
 st.write("The predicted value is {:.1f} USD".format(result[0]))
