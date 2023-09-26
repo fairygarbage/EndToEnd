@@ -7,6 +7,17 @@ from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer        
 from sklearn.preprocessing import FunctionTransformer, StandardScaler, OneHotEncoder  
 from sklearn.base import BaseEstimator, TransformerMixin 
+import joblib
+
+def predict(data):
+
+    model = joblib.load('final_model.pkl')
+
+    pipeline = joblib.load("full_pipeline.pkl")
+    data = pipeline.transform(data)
+    
+    return model.predict(data)
+    
 st.header('House prediction base in Californa Prices Values DataSet')
 st.write('Data Science Project')
 
